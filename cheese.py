@@ -140,7 +140,8 @@ class Cheese:
             self.KrWhite = tkinter.PhotoImage(file='KrWhite.png')
             self.KrBlack = tkinter.PhotoImage(file='KrBlack.png')
             self.game[3][3] = ['L', 'white']
-            self.game[6][3] = ['0', 'black']
+            self.game[6][3] = ['0', 'noooo']
+            self.game[5][4] = ['P', 'black']
             self.desk()
 
             if c != '0':
@@ -165,6 +166,7 @@ class Cheese:
                         self.can(x, y)
                     elif c == 'Kr':
                         self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KrWhite)
+                        self.can(x, y)
 
                 if col == 'black' and self.now == 'black':
                     self.canvas.create_rectangle(x * 50 + 50, y * 50 + 200, (x + 1) * 50 + 50, (y + 1) * 50 + 200,
@@ -190,17 +192,18 @@ class Cheese:
 
 
     def clear(self, x, y):
-        if self.game[y][x][0] != '0':
-            return -1
-
         if self.game[y][x][1] == 'white':
-            if y-1>= 0 and self.game[y-1][x][0] == 'P':
+            if y - 1 >= 0 and x - 1 >= 0 and self.game[y-1][x-1][0] == 'P':
                 return -1
-            if y+1 <= 7 and self.game[y+1][x][0] == 'P':
+            if y - 1 >= 0 and x + 1 <= 7 and self.game[y-1][x+1][0] == 'P':
                 return -1
 
+            # if y-1 >= 0 and self.game[y-1][x][0] == 'P':
+            #     return -1
+            # if y+1 <= 7 and self.game[y+1][x][0] == 'P':
+            #     return -1
             #cheking diagonals
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x - i
                 k_y = y - i
                 if k_x >= 0 and k_x <= 7 and k_y >=0 and k_y <= 7:
@@ -212,7 +215,7 @@ class Cheese:
                                 break
                         else:
                             break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x - i
                 k_y = y + i
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -224,7 +227,7 @@ class Cheese:
                                 break
                         else:
                             break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x + i
                 k_y = y - i
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -236,7 +239,7 @@ class Cheese:
                                 break
                         else:
                             break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x + i
                 k_y = y + i
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -249,8 +252,8 @@ class Cheese:
                         else:
                             break
 
-            #cheking hor
-            for i in range(1,8):
+            #cheking horisontals
+            for i in range(1, 8):
                 k_x = x - i
                 k_y = y
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -260,7 +263,7 @@ class Cheese:
                                 return -1
                             break
                         break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x
                 k_y = y - i
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -272,7 +275,7 @@ class Cheese:
                                 break
                         else:
                             break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x + i
                 k_y = y
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -284,7 +287,7 @@ class Cheese:
                                 break
                         else:
                             break
-            for i in range(1,8):
+            for i in range(1, 8):
                 k_x = x
                 k_y = y + i
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
@@ -297,8 +300,20 @@ class Cheese:
                         else:
                             break
 
+            #cheking horses
+            for i in range(8):
+                dx = [-2, -2, -1, -1, 1, 1, 2, 2]
+                dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+                k_x = dx[i] + x
+                k_y = dy[i] + y
+                if k_x >= 0 and k_x <= 7 and k_y >=0 and k_y <= 7:
+                    if self.game[k_y][k_x][0] == 'K' and self.game[k_y][k_x][1] != self.game[y][x][1]:
+                        return -1
 
-        else:
+            return 0
+
+
+
 
 
 
@@ -435,7 +450,6 @@ class Cheese:
                     else:
                         self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50,
                                                      (k_y + 1) * 50 + 200, fill='#98FB98')
-
             for i in range(1, 8):
                 k_x = x
                 k_y = y - i
@@ -464,7 +478,6 @@ class Cheese:
                     else:
                         self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50,
                                                      (k_y + 1) * 50 + 200, fill='#98FB98')
-
             for i in range(1, 8):
                 k_x = x
                 k_y = y + i
@@ -487,9 +500,12 @@ class Cheese:
                 k_x = dx[i] + x
                 k_y = dy[i] + y
                 if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
-                    if clear(k_x,k_y) == 1:
-                        self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50,
-                                                     (k_y + 1) * 50 + 200, fill='#FA8072')
+                    if self.game[k_y][k_x][1] == 'noooo':
+                        self.game[k_y][k_x][1] = self.game[y][x][1]
+                        if self.clear(k_x, k_y) == 0:
+                            self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50,
+                                                         (k_y + 1) * 50 + 200, fill='#98FB98')
+                        self.game[k_y][k_x][1] = 'noooo'
 
         self.desk()
 
