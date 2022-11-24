@@ -4,8 +4,11 @@ import tkinter
 class Cheese:
     def __init__(self):
         self.now = 'white'
+        self.now_figure = '0'
+        self.GoClear = False
         self.game = []
         self.kol = 0
+        self.click = 0
         self.canvas = tkinter.Canvas(width=500, height=700)
         self.canvas['background'] = '#D2B48C'
         self.canvas.create_text(250, 100, text='Cheese', font='Arial 50', fill='#F5DEB3')
@@ -15,24 +18,26 @@ class Cheese:
         self.canvas.bind('<Button-1>', self.klik)
         self.desk()
         tkinter.mainloop()
+
+
     def desk(self):
-        self.PBlack = tkinter.PhotoImage(file='P_black.png')
-        self.PWhite = tkinter.PhotoImage(file='P_white.png')
-        self.LBlack = tkinter.PhotoImage(file='LBlack.png')
-        self.LWhite = tkinter.PhotoImage(file='LWhite.png')
-        self.KWhite = tkinter.PhotoImage(file='KWhite.png')
-        self.KBlack = tkinter.PhotoImage(file='KBlack.png')
-        self.CBlack = tkinter.PhotoImage(file='CBlack.png')
-        self.CWhite = tkinter.PhotoImage(file='CWhite.png')
-        self.FWhite = tkinter.PhotoImage(file='FWhite.png')
-        self.FBlack = tkinter.PhotoImage(file='FBlack.png')
-        self.KrWhite = tkinter.PhotoImage(file='KrWhite.png')
-        self.KrBlack = tkinter.PhotoImage(file='KrBlack.png')
+        self.PBlack = tkinter.PhotoImage(file='images/P_black.png')
+        self.PWhite = tkinter.PhotoImage(file='images/P_white.png')
+        self.LBlack = tkinter.PhotoImage(file='images/LBlack.png')
+        self.LWhite = tkinter.PhotoImage(file='images/LWhite.png')
+        self.KWhite = tkinter.PhotoImage(file='images/KWhite.png')
+        self.KBlack = tkinter.PhotoImage(file='images/KBlack.png')
+        self.CBlack = tkinter.PhotoImage(file='images/CBlack.png')
+        self.CWhite = tkinter.PhotoImage(file='images/CWhite.png')
+        self.FWhite = tkinter.PhotoImage(file='images/FWhite.png')
+        self.FBlack = tkinter.PhotoImage(file='images/FBlack.png')
+        self.KrWhite = tkinter.PhotoImage(file='images/KrWhite.png')
+        self.KrBlack = tkinter.PhotoImage(file='images/KrBlack.png')
 
 
         x = 50
         y = 200
-        if self.kol == 0:
+        if self.kol == 0 or self.GoClear:
             self.kol += 1
             for i in range(8):
                 for j in range(8):
@@ -59,8 +64,7 @@ class Cheese:
                         self.canvas.create_image(x + i * 50, y + j * 50, image=self.FWhite)
                     elif self.game[j][i][0] == 'Kr':
                         self.canvas.create_image(x + i * 50, y + j * 50, image=self.KrWhite)
-                    # else:
-                    #     self.canvas.create_text(x + i * 50, y + j * 50, text=self.game[j][i][0], fill='red')
+
                 if col == 'black':
                     if self.game[j][i][0] == 'P':
                         self.canvas.create_image(x + i * 50, y + j * 50, image=self.PBlack)
@@ -74,8 +78,7 @@ class Cheese:
                         self.canvas.create_image(x + i * 50, y + j * 50, image=self.FBlack)
                     elif self.game[j][i][0] == 'Kr':
                         self.canvas.create_image(x + i * 50, y + j * 50, image=self.KrBlack)
-                    # else:
-                    #     self.canvas.create_text(x + i * 50, y + j * 50, text=self.game[j][i][0], fill='green')
+
     def start(self):
 
         x = 30
@@ -121,74 +124,129 @@ class Cheese:
         for i in range(8):
             self.game[1][i] = ['P', 'black']
             self.game[6][i] = ['P', 'white']
+
     def klik(self, event):
         if event.x < 50 + 50 * 8 and event.x >= 50 and event.y <= 200 + 8 * 50 and event.y >= 200:
             x = int((event.x-50)/50)
             y = int((event.y-200)/50)
             c = self.game[y][x][0]
             col = self.game[y][x][1]
-            self.PBlack = tkinter.PhotoImage(file='P_black.png')
-            self.PWhite = tkinter.PhotoImage(file='P_white.png')
-            self.LBlack = tkinter.PhotoImage(file='LBlack.png')
-            self.LWhite = tkinter.PhotoImage(file='LWhite.png')
-            self.KWhite = tkinter.PhotoImage(file='KWhite.png')
-            self.KBlack = tkinter.PhotoImage(file='KBlack.png')
-            self.CBlack = tkinter.PhotoImage(file='CBlack.png')
-            self.CWhite = tkinter.PhotoImage(file='CWhite.png')
-            self.FWhite = tkinter.PhotoImage(file='FWhite.png')
-            self.FBlack = tkinter.PhotoImage(file='FBlack.png')
-            self.KrWhite = tkinter.PhotoImage(file='KrWhite.png')
-            self.KrBlack = tkinter.PhotoImage(file='KrBlack.png')
-            self.game[3][3] = ['L', 'white']
-            self.game[6][3] = ['0', 'noooo']
-            self.game[5][4] = ['P', 'black']
+            self.PBlack = tkinter.PhotoImage(file='images/P_black.png')
+            self.PWhite = tkinter.PhotoImage(file='images/P_white.png')
+            self.LBlack = tkinter.PhotoImage(file='images/LBlack.png')
+            self.LWhite = tkinter.PhotoImage(file='images/LWhite.png')
+            self.KWhite = tkinter.PhotoImage(file='images/KWhite.png')
+            self.KBlack = tkinter.PhotoImage(file='images/KBlack.png')
+            self.CBlack = tkinter.PhotoImage(file='images/CBlack.png')
+            self.CWhite = tkinter.PhotoImage(file='images/CWhite.png')
+            self.FWhite = tkinter.PhotoImage(file='images/FWhite.png')
+            self.FBlack = tkinter.PhotoImage(file='images/FBlack.png')
+            self.KrWhite = tkinter.PhotoImage(file='images/KrWhite.png')
+            self.KrBlack = tkinter.PhotoImage(file='images/KrBlack.png')
             self.desk()
 
-            if c != '0':
-                if col == 'white' and self.now == 'white':
-                    self.canvas.create_rectangle(x * 50 + 50, y * 50 + 200, (x + 1) * 50 + 50, (y + 1) * 50 + 200,
-                                                 fill='green')
+            if self.click == 1:
+                self.click = 0
+                if self.game[y][x][0] == '0' or (self.game[y][x][0] != '0' and self.game[y][x][1] != self.now):
+                    if self.now == 'white' or self.now == 'black':
+                        gox = 75 + x * 50
+                        goy = y * 50 + 225
 
-                    if c == 'P':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.PWhite)
-                        self.can(x, y)
-                    elif c == 'L':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.LWhite)
-                        self.can(x, y)
-                    elif c == 'K':
-                        self.canvas.create_image(75 + x * 50-2, 225 + y * 50, image=self.KWhite)
-                        self.can(x, y)
-                    elif c == 'C':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.CWhite)
-                        self.can(x, y)
-                    elif c == 'F':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.FWhite)
-                        self.can(x, y)
-                    elif c == 'Kr':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KrWhite)
-                        self.can(x, y)
+                        if self.game[y][x][0] == '0':
+                            will = self.canvas.itemcget(self.canvas.find_overlapping(gox, goy, gox + 1, goy + 1)[-1], "fill")
+                        else:
+                            will = '#98FB98'
+                        print(will)
+                        if will == '#98FB98' or self.game[y][x][0] != '0':
+                            colwill = '#FFF8DC'
+                            if (x + y) % 2 == 1:
+                                colwill = '#808080'
 
-                if col == 'black' and self.now == 'black':
-                    self.canvas.create_rectangle(x * 50 + 50, y * 50 + 200, (x + 1) * 50 + 50, (y + 1) * 50 + 200,
-                                                 fill='green')
+                            self.canvas.create_rectangle(self.now_figure[1][0] * 50 + 50, self.now_figure[1][1] * 50 + 200,
+                                                         (self.now_figure[1][0] + 1) * 50 + 50, (self.now_figure[1][1] + 1)
+                                                         * 50 + 200, fill=colwill)
+                            print(x, y)
+                            self.game[y][x][0] = self.now_figure[0]
+                            self.game[y][x][1] = self.now
+                            self.game[self.now_figure[1][1]][self.now_figure[1][0]][0] = '0'
+                            self.game[self.now_figure[1][1]][self.now_figure[1][0]][1] = 'noooo'
+                            self.GoClear = True
+                            self.desk()
+                            self.GoClear = False
+                            if self.now == 'white':
+                                self.now = 'black'
+                            else:
+                                self.now = 'white'
+                        else:
+                            self.GoClear = True
+                            self.desk()
+                            self.GoClear = False
+            else:
 
-                    if c == 'P':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.PBlack)
-                        self.can(x, y)
-                    elif c == 'L':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.LBlack)
-                        self.can(x, y)
-                    elif c == 'K':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KBlack)
-                        self.can(x, y)
-                    elif c == 'C':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.CBlack)
-                        self.can(x, y)
-                    elif c == 'F':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.FBlack)
-                        self.can(x, y)
-                    elif c == 'Kr':
-                        self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KrBlack)
+                if c != '0':
+                    self.click = 1
+                    if col == 'white' and self.now == 'white':
+                        self.canvas.create_rectangle(x * 50 + 50, y * 50 + 200, (x + 1) * 50 + 50, (y + 1) * 50 + 200,
+                                                     fill='green')
+
+                        if c == 'P':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.PWhite)
+                            self.can(x, y)
+                            self.now_figure = ['P', [x, y]]
+                        elif c == 'L':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.LWhite)
+                            self.can(x, y)
+                            self.now_figure = ['L', (x, y)]
+                        elif c == 'K':
+                            self.canvas.create_image(75 + x * 50-2, 225 + y * 50, image=self.KWhite)
+                            self.can(x, y)
+                            self.now_figure = ['K', (x, y)]
+                        elif c == 'C':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.CWhite)
+                            self.can(x, y)
+                            self.now_figure = ['C', (x, y)]
+                        elif c == 'F':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.FWhite)
+                            self.can(x, y)
+                            self.now_figure = ['F', (x, y)]
+                        elif c == 'Kr':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KrWhite)
+                            self.can(x, y)
+                            self.now_figure = ['Kr', (x, y)]
+
+                    if col == 'black' and self.now == 'black':
+                        self.canvas.create_rectangle(x * 50 + 50, y * 50 + 200, (x + 1) * 50 + 50, (y + 1) * 50 + 200,
+                                                     fill='green')
+
+                        if c == 'P':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.PBlack)
+                            self.can(x, y)
+                            self.now_figure = ['P', (x, y)]
+                        elif c == 'L':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.LBlack)
+                            self.can(x, y)
+                            self.now_figure = ['L', (x, y)]
+                        elif c == 'K':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KBlack)
+                            self.can(x, y)
+                            self.now_figure = ['K', (x, y)]
+                        elif c == 'C':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.CBlack)
+                            self.can(x, y)
+                            self.now_figure = ['C', (x, y)]
+                        elif c == 'F':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.FBlack)
+                            self.can(x, y)
+                            self.now_figure = ['F', (x, y)]
+                        elif c == 'Kr':
+                            self.canvas.create_image(75 + x * 50, 225 + y * 50, image=self.KrBlack)
+                            self.can(x, y)
+                            self.now_figure = ['Kr', (x, y)]
+                else:
+                    self.now_figure = '0'
+                    self.GoClear = True
+                    self.desk()
+                    self.GoClear = False
 
 
     def clear(self, x, y):
@@ -198,11 +256,7 @@ class Cheese:
             if y - 1 >= 0 and x + 1 <= 7 and self.game[y-1][x+1][0] == 'P':
                 return -1
 
-            # if y-1 >= 0 and self.game[y-1][x][0] == 'P':
-            #     return -1
-            # if y+1 <= 7 and self.game[y+1][x][0] == 'P':
-            #     return -1
-            #cheking diagonals
+
             for i in range(1, 8):
                 k_x = x - i
                 k_y = y - i
@@ -312,6 +366,42 @@ class Cheese:
 
             return 0
 
+    def shah(self, color):
+
+        x = 0
+        y = 0
+        for i in range(8):
+            for j in range(8):
+                if self.game[j][i][0] == 'Kr' and self.game[j][i][1] == color:
+                    x = i
+                    y = j
+
+        if color == 'white':
+            if y - 1 >= 0 and x-1 >= 0 and self.game[y-1][x-1] == ['P', 'black']:
+                return True
+            if y - 1 >= 0 and x + 1 <= 7 and self.game[y-1][x+1] == ['P', 'black']:
+                return True
+        else:
+            if y + 1 <= 7 and x - 1>=0 and self.game[y+1][x-1] == ['P', 'white']:
+                return True
+            if y + 1 <= 7 and x + 1 <= 7 and self.game[y+1][x+1] == ['P', 'white']:
+
+        hlad = 'white'
+        if color == 'white':
+            hlad = 'black'
+
+        dx = [-2, -2, -1, -1, 1, 1, 2, 2]
+        dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+        for i in range(8):
+            k_x = dx[i] + x
+            k_y = dy[i] + y
+
+            if k_x >= 0 and k_x <= 7 and k_y >= 0 and k_y <= 7:
+                if self.game[k_y][k_x] == ['K', hlad]:
+                    return True
+
+        ##Нужно добавить ферзя слона и ладью
+
 
 
 
@@ -329,10 +419,10 @@ class Cheese:
                 if y == 6 and self.game[4][x][0] == '0':
                     self.canvas.create_rectangle(x * 50 + 50, (y - 2) * 50 + 200, (x + 1) * 50 + 50, (y - 1) * 50 + 200,
                                                  fill='#98FB98')
-            if x-1 >= 0 and self.game[y-1][x-1][0] != '0':
+            if x-1 >= 0 and y-1 >=0 and  self.game[y-1][x-1][0] != '0' and self.game[y-1][x-1][1] != self.game[y][x][1]:
                 self.canvas.create_rectangle((x - 1) * 50 + 50, (y - 1) * 50 + 200, x * 50 + 50, y * 50 + 200,
                                              fill='#FA8072')
-            if x+1 <= 7 and self.game[y-1][x+1][0] != '0':
+            if x+1 <= 7 and y-1 >=0 and self.game[y-1][x+1][0] != '0' and self.game[y-1][x+1][1] != self.game[y][x][1]:
                 self.canvas.create_rectangle((x+1) * 50 + 50, (y - 1) * 50 + 200, (x + 2) * 50 + 50, y * 50 + 200,
                                              fill='#FA8072')
 
@@ -343,10 +433,10 @@ class Cheese:
                 if y == 1 and self.game[3][x][0] == '0':
                     self.canvas.create_rectangle(x * 50 + 50, 3 * 50 + 200, (x + 1) * 50 + 50, 4 * 50 + 200,
                                                  fill='#98FB98')
-                if x+1 <= 7 and self.game[y+1][x+1][0] != '0':
+                if x+1 <= 7 and y+1<=7 and self.game[y+1][x+1][0] != '0' and self.game[y+1][x+1][1] != self.game[y][x][1]:
                     self.canvas.create_rectangle((x + 1) * 50 + 50, (y + 1) * 50 + 200, (x + 2) * 50 + 50,
                                                  (y + 2) * 50 + 200, fill='#FA8072')
-                if x-1 >= 0 and self.game[y+1][x-1][0] != '0':
+                if x-1 >= 0 and y+1<=7 and self.game[y+1][x-1][0] != '0' and self.game[y+1][x-1][1] != self.game[y][x][1]:
                     self.canvas.create_rectangle((x - 1) * 50 + 50, (y + 1) * 50 + 200, x * 50 + 50, (y + 2) * 50 + 200,
                                                  fill='#FA8072')
 
@@ -362,7 +452,7 @@ class Cheese:
                         self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50, (k_y + 1) * 50 + 200, fill='#98FB98')
                     else:
                         if self.game[k_y][k_x][1] != self.game[y][x][1]:
-                            self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50, (k_y + 1) * 50 + 200,fill='#FA8072')
+                            self.canvas.create_rectangle(k_x * 50 + 50, k_y * 50 + 200, (k_x + 1) * 50 + 50, (k_y + 1) * 50 + 200, fill='#FA8072')
 
         if self.game[y][x][0] == 'C' or self.game[y][x][0] == 'F':
 
@@ -516,4 +606,3 @@ class Cheese:
 
 
 app = Cheese()
-
